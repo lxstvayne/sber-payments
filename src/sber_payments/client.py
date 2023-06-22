@@ -44,13 +44,13 @@ class Client(object):
         self.logger = logging.getLogger('sber')
 
     def _get(self, url: str, params: dict = None):
-        resp = requests.get(url, headers=self.default_headers, params=params, verify=False)
+        resp = requests.get(url, headers=self.default_headers, params=params)
         if not resp.ok:
             raise ApiError(resp.status_code, resp.text)
         return resp.json()
 
     def _post(self, url: str, params: dict = None):
-        resp = requests.post(url, headers=self.default_headers, params=params, verify=False)
+        resp = requests.post(url, headers=self.default_headers, params=params)
         if not resp.ok:
             raise ApiError(resp.status_code, resp.text)
         return resp.json()
