@@ -76,7 +76,8 @@ class Client(object):
             'amount': amount,
             'returnUrl': return_url,
         }
-        # py3.9: self.params |= params
+        
+        params |= kwargs
 
         return self._post(url, params={**self.params, **params})
 
