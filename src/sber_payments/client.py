@@ -9,7 +9,7 @@ class Client(object):
 
     URL = 'https://3dsec.sberbank.ru/payment/rest/'
 
-    def __init__(self, username: str = None, password: str = None, token: str = None):
+    def __init__(self, username: str = None, password: str = None, token: str = None, cert: str = None):
         """
         :param username: Логин служебной учётной записи продавца. При передаче логина и пароля для аутентификации в
                          платёжном шлюзе параметр token передавать не нужно.
@@ -35,6 +35,8 @@ class Client(object):
         else:
             raise BadCredentialsException('Авторизация через логин/пароль или токен, выберите что-то одно')
 
+        self.cert = cert
+
         self.default_headers = {
             'Accept': 'application/json',
             'Accept-Encoding': 'gzip,deflate,sdch',
@@ -44,13 +46,13 @@ class Client(object):
         self.logger = logging.getLogger('sber')
 
     def _get(self, url: str, params: dict = None):
-        resp = requests.get(url, headers=self.default_headers, params=params)
+        resp = requests.get(url, headers=self.default_headers, params=params, verify=self.cert)
         if not resp.ok:
             raise ApiError(resp.status_code, resp.text)
         return resp.json()
 
     def _post(self, url: str, params: dict = None):
-        resp = requests.post(url, headers=self.default_headers, params=params)
+        resp = requests.post(url, headers=self.default_headers, params=params, verify=self.cert)
         if not resp.ok:
             raise ApiError(resp.status_code, resp.text)
         return resp.json()
