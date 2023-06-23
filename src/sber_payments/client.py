@@ -3,13 +3,15 @@ import requests
 
 from .exceptions import ApiError, BadCredentialsException
 
+import os
+
 
 class Client(object):
     """Performs requests to the SBER API."""
 
     URL = 'https://3dsec.sberbank.ru/payment/rest/'
 
-    def __init__(self, username: str = None, password: str = None, token: str = None, cert: str = None):
+    def __init__(self, username: str = None, password: str = None, token: str = None):
         """
         :param username: Логин служебной учётной записи продавца. При передаче логина и пароля для аутентификации в
                          платёжном шлюзе параметр token передавать не нужно.
@@ -35,7 +37,7 @@ class Client(object):
         else:
             raise BadCredentialsException('Авторизация через логин/пароль или токен, выберите что-то одно')
 
-        self.cert = cert
+        self.cert = os.environ.get("SBER_CERT")
 
         self.default_headers = {
             'Accept': 'application/json',
