@@ -195,3 +195,11 @@ class Client(object):
             'orderId': order_id,
         }
         return self._post(url, params={**self.params, **params})
+    
+    def decline_order(self, order_id: str = None, order_number: str = None):
+        url = f"{self.URL}decline.do"
+        params = {
+            "orderId": order_id,
+            "orderNumber": order_number
+        }
+        return self._post(url, params={**self.params, **params})
